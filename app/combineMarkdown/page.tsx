@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { FileInput } from '@mantine/core';
 
 const page = () => {
   const [combinedMarkdown, setCombinedMarkdown] = useState<string>('');
@@ -31,12 +30,16 @@ const page = () => {
 
   return (
     <div>
-      <FileInput
-        label="Upload Markdown files"
-        placeholder="Select files"
+      <div>
+      <label htmlFor="fileInput">Upload Markdown files:</label>
+      <input
+        type="file"
+        id="fileInput"
+        name="files"
         multiple
-        onChange={(files) => handleFileUpload(files)}
+        onChange={handleFileUpload}
       />
+    </div>
       {combinedMarkdown && (
         <a
           href={`data:text/markdown;charset=utf-8,${encodeURIComponent(combinedMarkdown)}`}

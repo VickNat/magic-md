@@ -1,13 +1,13 @@
 'use client'
 
+import LandingPage from "@/components/LandingPage";
 import Image from "next/image";
-import { Button } from '@mantine/core';
 
 
 export default function Home() {
   return (
     <main className="">
-      <Button variant="filled">Button</Button>
+      <LandingPage />
     </main>
   );
 }
