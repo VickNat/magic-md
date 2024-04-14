@@ -1,17 +1,30 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Textarea, Button } from '@mantine/core';
+import { MdOutlineFileDownload } from 'react-icons/md';
 
 const Page = () => {
-  const [markdownContent, setMarkdownContent] = useState<string>('');
   const [sections, setSections] = useState<{ title: string, content: string }[]>([]);
 
-  const handleMarkdownChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMarkdownContent(event.target.value);
+  const handleFileUpload = async (event: any) => {
+    if (!event.target.files) return;
+
+    const file = event.target.files[0];
+    const content = await readFile(file);
+    splitMarkdown(content);
   };
 
-  const splitMarkdown = () => {
+  const readFile = async (file: any): Promise<string> => {
+    const reader = new FileReader();
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        resolve(reader.result as string);
+      };
+      reader.readAsText(file);
+    });
+  };
+
+  const splitMarkdown = (markdownContent: string) => {
     // Regular expression to match headings (e.g., # Heading 1)
     const headingRegex = /^(#{1,6})\s(.*)/gm;
 
@@ -26,9 +39,11 @@ const Page = () => {
       const content = markdownContent.substring(lastIndex, match.index);
 
       // Add content before next heading (or end of string)
-      sectionsArray.push({ title, content });
+      if (content.trim() !== '') {
+        sectionsArray.push({ title: 'Content Before Heading', content });
+      }
 
-      lastIndex = match.index + match[0].length;
+      lastIndex = match.index;
     }
 
     // Get the content after the last heading
@@ -38,29 +53,37 @@ const Page = () => {
     setSections(sectionsArray);
   };
 
+
   return (
-    <div>
-      <Textarea
-        placeholder="Enter your Markdown content here..."
-        value={markdownContent}
-        onChange={handleMarkdownChange}
-        style={{ minHeight: '200px' }}
-      />
-      <Button onClick={splitMarkdown}>Split Markdown</Button>
-
-      {sections.slice(0, -1).map((section, index) => (
-        <a
-          key={index}
-          href={`data:text/markdown;charset=utf-8,${encodeURIComponent(`#${section.title}\n\n${sections[index + 1].content}`)}`}
-          download={`section-${index + 1}.md`}
-        >
-          Download Section {index + 1}
-        </a>
-      ))}
-
+    <div className='min-h-[650px] flex flex-col justify-start items-center gap-y-8 mb-16'>
+      <div className='flex flex-col justify-center items-center gap-y-8'>
+        <h1 className='text-center font-bold text-3xl md:text-4xl' >Split Markdown files</h1>
+        <label htmlFor="fileInput" className="relative cursor-pointer bg-indigo-400 rounded-lg border border-transparent shadow-sm px-12 py-6 font-medium text-white hover:bg-indigo-500 focus:outline-none">
+          <span className='text-3xl'>Upload File</span>
+          <input type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept=".md" />
+        </label>
+      </div>
+      {
+        sections.length > 0 && (
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className='text-center font-bold text-2xl text-slate-500 mb-4'>Split files</h2>
+            <div className='grid grid-cols-1 gap-4 min-w-72'>
+              {sections.map((section, index) => (
+                <a
+                  key={index}
+                  href={`data:text/markdown;charset=utf-8,${encodeURIComponent(section.content)}`}
+                  download={`${section.title.replace(/\s+/g, '_').toLowerCase()}.md`} className='hover:scale-105 transition duration-300 cursor-pointer p-4 bg-indigo-50 rounded-lg flex justify-between gap-x-4'>
+                  <span className='block text-indigo-700 font-bold'>{section.title}</span>
+                  <MdOutlineFileDownload className='h-6 w-auto text-indigo-700' />
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
 
     </div>
-  );
+  )
 }
 
-export default Page;
+export default Page

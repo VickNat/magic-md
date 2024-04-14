@@ -2,6 +2,10 @@
 
 import React, { useState } from 'react';
 import { marked } from 'marked';
+import { Button } from '@/components/ui/button';
+import { IoIosLink } from 'react-icons/io';
+import { MdContentCopy } from 'react-icons/md';
+import PDFViewer from '@/components/PDFViewer';
 
 const Page = () => {
   const [markdown, setMarkdown] = useState('');
@@ -28,11 +32,20 @@ const Page = () => {
     reader.readAsText(file as Blob);
   };
 
+  console.log('html', html);
+
   return (
-    <div>
-      <input type="file" accept=".md" onChange={(event) => handleFileUpload(event)} />
-      <button onClick={convertToHtml}>Convert to HTML</button>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+    <div className='min-h-[650px] flex flex-col justify-start items-center gap-y-8 mb-12'>
+      <div className='flex flex-col justify-center items-center gap-y-8'>
+        <h1 className='text-center font-bold text-3xl md:text-4xl' >Convert To HTML</h1>
+        <label htmlFor="fileInput" className="relative cursor-pointer bg-indigo-400 rounded-lg border border-transparent shadow-sm px-12 py-6 font-medium text-white hover:bg-indigo-500 focus:outline-none">
+          <span className='text-3xl'>Upload File</span>
+          <input required type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(event) => handleFileUpload(event)} accept=".md" />
+        </label>
+        <Button className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={convertToHtml}><IoIosLink /> <span>Convert To HTML</span></Button>
+      </div>
+
+      <PDFViewer html={html} />
     </div>
   );
 };

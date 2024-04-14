@@ -1,0 +1,52 @@
+/* Styles for all header types common */
+
+.htmlContainer h1,
+.htmlContainer h2,
+.htmlContainer h3,
+.htmlContainer h4,
+.htmlContainer h5,
+.htmlContainer h6 {
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: #333;
+}
+
+.htmlContainer h1 {
+  font-size: 24px;
+}
+
+.htmlContainer h2 {
+  font-size: 20px;
+}
+
+.htmlContainer h3 {
+  font-size: 18px;
+}
+
+.htmlContainer h4 {
+  font-size: 16px;
+}
+
+.htmlContainer h5 {
+  font-size: 14px;
+}
+
+.htmlContainer h6 {
+  font-size: 12px;
+}
+.htmlContainer p {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+}
+
+.htmlContainer a {
+  font-family: Arial, sans-serif;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.htmlContainer a:hover {
+  text-decoration: underline;
+}

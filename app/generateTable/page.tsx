@@ -1,97 +1,112 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Table, Textarea, Button, CopyButton, ActionIcon, Tooltip, rem } from '@mantine/core';
-import { IconCopy, IconCheck } from '@tabler/icons-react';
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button"
+import { MdContentCopy } from "react-icons/md";
 
-const page = () => {
-  const [tableData, setTableData] = useState<string[][]>([['', '', '']]);
-  const [markdownContent, setMarkdownContent] = useState<string>('');
+const Page = () => {
+  const [rows, setRows] = useState([['', '']]);
+  const [padding, setPadding] = useState(true);
 
-
-  const handleCellChange = (rowIndex: number, columnIndex: number, value: string) => {
-    const updatedTableData = [...tableData];
-    updatedTableData[rowIndex][columnIndex] = value;
-    setTableData(updatedTableData);
-
-    // Update the Markdown representation
-    const markdown = generateMarkdown(updatedTableData);
-    setMarkdownContent(markdown);
+  const handleCellChange = (i: any, j: any, value: any) => {
+    const newRows = [...rows];
+    newRows[i][j] = value;
+    setRows(newRows);
   };
 
   const addRow = () => {
-    setTableData([...tableData, Array(tableData[0].length).fill('')]);
+    const newCols = Array(rows[0].length).fill('');
+    setRows([...rows, newCols]);
   };
 
   const addColumn = () => {
-    const updatedTableData = tableData.map((row) => [...row, '']);
-    setTableData(updatedTableData);
+    setRows(rows.map(row => [...row, '']));
   };
 
-  const deleteLastRow = () => {
-    if (tableData.length === 1) return;
-    setTableData(tableData.slice(0, -1));
+  const togglePadding = () => {
+    setPadding(!padding);
   };
 
-  const deleteLastColumn = () => {
-    if (tableData[0].length === 1) return;
-    const updatedTableData = tableData.map((row) => row.slice(0, -1));
-    setTableData(updatedTableData);
+  const generateMarkdown = () => {
+    const maxLengths = rows[0].map((_, j) => Math.max(...rows.map(row => row[j]?.length)));
+
+    const markdownRows = rows.map(row => {
+      const markdownRow = row.map((cell, j) => {
+        const paddedCell = cell.padEnd(maxLengths[j]);
+        return padding ? ` ${paddedCell} ` : paddedCell;
+      }).join('|');
+
+      const separator = row.map((_, j) => {
+        const paddedSeparator = '-'.padEnd(maxLengths[j], '-');
+        return padding ? ` ${paddedSeparator} ` : paddedSeparator;
+      }).join('|');
+
+      return `|${markdownRow}|\n|${separator}|`;
+    });
+
+    return markdownRows.join('\n');
   };
 
-  const generateMarkdown = (data: string[][]) => {
-    return data.map((row) => `| ${row.join(' | ')} |`).join('\n');
+  const removeRow = () => {
+    if (rows.length > 1) {
+      setRows(rows.slice(0, -1));
+    }
   };
 
+  const removeColumn = () => {
+    if (rows[0].length > 1) {
+      setRows(rows.map(row => row.slice(0, -1)));
+    }
+  };
+
+  const resetTable = () => {
+    setRows([['', '']]);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(generateMarkdown());
+  };
 
   return (
-    <div>
-      <Table>
-        <Table.Tbody>
-          {tableData.map((row, rowIndex) => (
-            <Table.Tr key={rowIndex}>
-              {row.map((cell, columnIndex) => (
-                <Table.Td key={columnIndex}>
-                  <Textarea
-                    value={cell}
-                    onChange={(event) =>
-                      handleCellChange(rowIndex, columnIndex, event.target.value)
-                    }
-                  />
-                </Table.Td>
-              ))}
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+    <div className='min-h-[650px] mx-auto w-10/12 max-w-screen-xl flex flex-col justify-start items-center gap-y-8'>
+      <h1 className='text-center font-bold text-3xl md:text-4xl' >Generate Link</h1>
+      <div className="flex flex-wrap justify-center gap-4 mb-6">
+        <Button onClick={addRow} className='bg-indigo-500 hover:bg-indigo-600'>Add Row</Button>
+        <Button onClick={addColumn} className='bg-indigo-500 hover:bg-indigo-600'>Add Column</Button>
+        <Button onClick={removeRow} variant={'destructive'}>Remove Row</Button>
+        <Button onClick={removeColumn} variant={'destructive'}>Remove Column</Button>
+        <Button onClick={resetTable} className='bg-gray-400 hover:bg-gray-500'>Reset Table</Button>
+        <Button onClick={togglePadding} className='bg-indigo-500 hover:bg-indigo-600'>{padding ? 'Remove Padding' : 'Add Padding'}</Button>
+      </div>
 
-      <Button onClick={addRow}>Add Row</Button>
-      <Button onClick={addColumn}>Add Column</Button>
-      <Button onClick={deleteLastRow}>Delete Last Row</Button>
-      <Button onClick={deleteLastColumn}>Delete Last Column</Button>
-
-      <CopyButton value={markdownContent} timeout={2000}>
-        {({ copied, copy }) => (
-          <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
-            <ActionIcon color={copied ? 'teal' : 'gray'} variant="subtle" onClick={copy}>
-              {copied ? (
-                <IconCheck style={{ width: rem(16) }} />
-              ) : (
-                <IconCopy style={{ width: rem(16) }} />
-              )}
-            </ActionIcon>
-          </Tooltip>
-        )}
-      </CopyButton>
-
-      <Textarea
-        value={markdownContent}
-        readOnly
-        style={{ minHeight: '200px' }}
-      />
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex-1">
+          <table className="w-full border-collapse">
+            {rows.map((row, i) => (
+              <tr key={i}>
+                {row.map((cell, j) => (
+                  <td key={j} className="border border-gray-300">
+                    <input
+                      value={cell}
+                      onChange={e => handleCellChange(i, j, e.target.value)}
+                      className="w-full px-4 py-2 bg-white border border-gray-300 rounded focus:outline-none focus:border-indigo-500"
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </table>
+        </div>
+        <div className="flex-1">
+          <div className="bg-white rounded-lg shadow-md p-6 relative">
+            <Button onClick={copyToClipboard} variant={'ghost'} className="absolute top-0 right-0 "><MdContentCopy className='h-6 w-auto text-indigo-600' /></Button>
+            <pre>{generateMarkdown()}</pre>
+          </div>
+        </div>
+      </div>
 
     </div>
-  )
+  );
 }
 
-export default page
+export default Page
