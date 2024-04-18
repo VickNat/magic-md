@@ -1,6 +1,5 @@
 import React from 'react'
 import FeatureCard from './FeatureCard'
-import folderIcon from '@/public/folder-icon.png'
 import jpg from '@/public/jpg.png'
 import pdf from '@/public/pdf.png'
 import png from '@/public/png.png'

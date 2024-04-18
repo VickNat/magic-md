@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { marked } from 'marked';
-import { toPng } from 'html-to-image';
 import * as htmlToImage from 'html-to-image';
 import { Button } from '@/components/ui/button';
 import { IoIosLink } from 'react-icons/io';

@@ -1,21 +1,18 @@
 'use client'
 
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { storage } from '@/firebase';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IoIosLink } from "react-icons/io";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Copy } from "lucide-react";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { DialogClose } from "@radix-ui/react-dialog";

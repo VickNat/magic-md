@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { marked } from 'marked';
 import { Button } from '@/components/ui/button';
 import { IoIosLink } from 'react-icons/io';
-import { MdContentCopy } from 'react-icons/md';
 import PDFViewer from '@/components/PDFViewer';
 
 const Page = () => {

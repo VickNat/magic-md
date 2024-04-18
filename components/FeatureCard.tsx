@@ -1,5 +1,4 @@
 import React from 'react'
-import folderIcon from '@/public/folder-icon.png'
 import Image from 'next/image'
 import Link from 'next/link'
 
