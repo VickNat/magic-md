@@ -8,6 +8,8 @@ export const metadata: Metadata = {
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ProgressBar, ProgressBarProvider } from "react-transition-progress";
+
 
 export default function RootLayout({
   children,
@@ -17,9 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-body bg-slate-100">
-        <Header />
-        {children}
-        <Footer />
+        <ProgressBarProvider>
+          <ProgressBar className="fixed h-1 shadow-lg shadow-indigo-500/20 bg-indigo-500 top-0 z-50" />
+          <Header />
+          {children}
+          <Footer />
+        </ProgressBarProvider>
       </body>
     </html>
   );

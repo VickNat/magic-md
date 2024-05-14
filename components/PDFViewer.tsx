@@ -6,7 +6,7 @@ import { MdContentCopy } from 'react-icons/md'
 import  styles from './PDFViewer.module.css';
 
 interface PDFViewerProps {
-  html: any
+  html: any;
 }
 
 const PDFViewer = ({ html }: PDFViewerProps) => {

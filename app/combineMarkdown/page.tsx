@@ -4,10 +4,12 @@ import React, { useState } from 'react'
 import { Button, buttonVariants } from "@/components/ui/button"
 import { IoIosLink } from 'react-icons/io';
 import { MdOutlineFileDownload } from 'react-icons/md';
+import { Loader2 } from 'lucide-react';
 
 const Page = () => {
   const [combinedMarkdown, setCombinedMarkdown] = useState<string>('');
   const [files, setFiles] = useState<any[]>([]);
+  const [uploadingFiles, setUploadingFiles] = useState<boolean>(false);
 
   const handleFileUpload = async (event: any) => {
     if (!event.target.files) return;
@@ -16,6 +18,7 @@ const Page = () => {
   };
 
   const handleMergeFiles = async () => {
+    setUploadingFiles(true);
     let combinedContent = '';
 
     for (const file of files) {
@@ -24,10 +27,14 @@ const Page = () => {
     }
 
     setCombinedMarkdown(combinedContent);
+    setTimeout(() => {
+      setUploadingFiles(false);
+    }, 2000);
   };
 
   const readFile = async (file: any): Promise<string> => {
     const reader = new FileReader();
+    // setUploadingFiles(false);
     return new Promise((resolve) => {
       reader.onload = () => {
         resolve(reader.result as string);
@@ -39,13 +46,18 @@ const Page = () => {
   return (
     <div className='min-h-[650px] flex flex-col justify-start items-center gap-y-8 mb-16'>
       <div className='flex flex-col justify-center items-center gap-y-8'>
-        <h1 className='text-center font-bold text-3xl md:text-4xl'>Merge Markdown files</h1>
+        <h1 className='text-center font-bold text-3xl md:text-4xl'>Combine Markdown files</h1>
         <label htmlFor="fileInput" className="relative cursor-pointer bg-indigo-400 rounded-lg border border-transparent shadow-sm px-12 py-6 font-medium text-white hover:bg-indigo-500 focus:outline-none">
-          <span className='text-3xl'>Upload File</span>
-          <input type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept=".md" />
+          <span className='text-3xl'>Upload Files</span>
+          <input type="file" multiple id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept=".md" />
         </label>
         <div className='flex gap-x-4 justify-center items-center'>
-          <Button disabled={files.length <= 1} className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={handleMergeFiles}><IoIosLink /> <span>Merge Files</span></Button>
+          <Button disabled={files.length <= 1} className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={handleMergeFiles}>
+            {uploadingFiles ? <Loader2 className='h-8 w-auto animate-spin' /> :
+              <>
+                <IoIosLink /> <span>Merge Files</span>
+              </>}
+          </Button>
           {
             combinedMarkdown && (
               <a href={`data:text/markdown;charset=utf-8,${encodeURIComponent(combinedMarkdown)}`}
