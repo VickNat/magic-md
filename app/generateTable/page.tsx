@@ -69,7 +69,7 @@ const Page = () => {
 
   return (
     <div className='min-h-[650px] mx-auto w-10/12 max-w-screen-xl flex flex-col justify-start items-center gap-y-8'>
-      <h1 className='text-center font-bold text-3xl md:text-4xl' >Generate Link</h1>
+      <h1 className='text-center font-bold text-3xl md:text-4xl' >Generate Table</h1>
       <div className="flex flex-wrap justify-center gap-4 mb-6">
         <Button onClick={addRow} className='bg-indigo-500 hover:bg-indigo-600'>Add Row</Button>
         <Button onClick={addColumn} className='bg-indigo-500 hover:bg-indigo-600'>Add Column</Button>

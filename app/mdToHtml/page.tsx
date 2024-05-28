@@ -31,8 +31,6 @@ const Page = () => {
     reader.readAsText(file as Blob);
   };
 
-  console.log('html', html);
-
   return (
     <div className='min-h-[650px] flex flex-col justify-start items-center gap-y-8 mb-12'>
       <div className='flex flex-col justify-center items-center gap-y-8'>

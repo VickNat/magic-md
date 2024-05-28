@@ -59,7 +59,7 @@ const Page = () => {
       </div>
 
       <div className='flex gap-x-4 justify-center items-center'>
-        <Button className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={convertToHtml}><IoIosLink /> <span>Convert To PNG</span></Button>
+        <Button className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={convertToHtml}><IoIosLink /> <span>Convert To JPG</span></Button>
         {
           html && (
             <Button className="bg-slate-400 hover:bg-slate-500 text-white py-7 px-6 rounded-lg shadow-sm text-center font-bold flex gap-x-2 items-center justify-center" onClick={htmlToJpg}><MdOutlineFileDownload className='h-8 w-auto' /></Button>
