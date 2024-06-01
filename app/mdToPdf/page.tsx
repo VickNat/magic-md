@@ -5,7 +5,8 @@ import PDFViewer from '@/components/PDFViewer';
 import jsPDF from 'jspdf';
 import { Button } from '@/components/ui/button';
 import { IoIosLink } from 'react-icons/io';
-import { MdOutlineFileDownload } from 'react-icons/md';
+import { MdContentCopy, MdOutlineFileDownload } from 'react-icons/md';
+import styles from '@/components/PDFViewer.module.css';
 
 const Page = () => {
   const [markdown, setMarkdown] = useState('');
@@ -63,7 +64,7 @@ const Page = () => {
   return (
     <div className='min-h-[650px] flex flex-col justify-start items-center gap-y-8 mb-16'>
       <div className='flex flex-col justify-center items-center gap-y-8'>
-        <h1 className='text-center font-bold text-3xl md:text-4xl'>Convert to PDF</h1>
+        <h1 className='text-center font-bold text-3xl md:text-4xl'>Convert Markdown to PDF</h1>
         <label htmlFor="fileInput" className="relative cursor-pointer bg-indigo-400 rounded-lg border border-transparent shadow-sm px-12 py-6 font-medium text-white hover:bg-indigo-500 focus:outline-none">
           <span className='text-3xl'>Upload File</span>
           <input required type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(event) => handleFileUpload(event)} accept=".md" />
@@ -83,7 +84,12 @@ const Page = () => {
       </div>
 
       <div ref={reportTemplateRef}>
-        <PDFViewer html={html} />
+        <div className="html-container bg-white rounded-lg shadow-md p-6 relative min-h-96 w-[450px]">
+          <Button variant={'ghost'} className="absolute top-0 right-0" onClick={() => navigator.clipboard.writeText(html)}><MdContentCopy className='h-6 w-auto text-indigo-600' /></Button>
+          <div >
+            <div className={styles.htmlContainer} dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
+        </div>
       </div>
     </div>
   );
