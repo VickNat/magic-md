@@ -7,22 +7,28 @@ import { Button } from '@/components/ui/button';
 import { IoIosLink } from 'react-icons/io';
 import { MdContentCopy, MdOutlineFileDownload } from 'react-icons/md';
 import styles from '@/components/PDFViewer.module.css';
+import { Loader2 } from 'lucide-react';
 
 const Page = () => {
   const [markdown, setMarkdown] = useState('');
   const [html, setHtml] = useState<any>('');
   const [pdfGenerated, setPdfGenerated] = useState(false);
   const reportTemplateRef = useRef<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const convertToHtml = async () => {
     if (!markdown) {
       console.error('Markdown content is empty.');
       return;
     }
-
+    setLoading(true);
     const htmlContent = marked(markdown);
-    setHtml(htmlContent);
-    setPdfGenerated(true);
+    
+    setTimeout(() => {
+      setHtml(htmlContent);
+      setPdfGenerated(true);
+      setLoading(false);
+    }, 1500);
     // handleGeneratePdf();
   };
 
@@ -72,7 +78,12 @@ const Page = () => {
       </div>
 
       <div className='flex gap-x-4 justify-center items-center'>
-        <Button className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={convertToHtml}><IoIosLink /> <span>Convert To PDF</span></Button>
+        <Button disabled={!markdown} className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={convertToHtml}>
+          {loading ? <Loader2 className='h-8 w-auto animate-spin' /> :
+            <>
+              <IoIosLink /> <span>Generate PDF</span>
+            </>}
+        </Button>
         {pdfGenerated && (
           <div>
             <button

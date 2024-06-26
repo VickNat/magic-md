@@ -10,7 +10,7 @@ const Footer = () => {
             href="https://flowbite.com/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center text-2xl font-semibold text-indigo-500 whitespace-nowrap dark:text-white">
               MagicMD
             </span>
           </Link>
@@ -21,7 +21,7 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="#" className="hover:underline me-4 md:me-6">
+              <Link href="/aboutus" className="hover:underline me-4 md:me-6">
                 About Us
               </Link>
             </li>

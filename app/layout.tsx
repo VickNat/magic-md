@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Head from "next/head"; // Import Head
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-8WMF9P85FP"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-8WMF9P85FP');
+            `,
+          }}
+        />
+      </Head>
       <body className="font-body bg-slate-100">
         <ProgressBarProvider>
           <ProgressBar className="fixed h-1 shadow-lg shadow-indigo-500/20 bg-indigo-500 top-0 z-50" />

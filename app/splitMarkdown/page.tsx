@@ -1,10 +1,12 @@
 'use client'
 
+import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react'
 import { MdOutlineFileDownload } from 'react-icons/md';
 
 const Page = () => {
   const [sections, setSections] = useState<{ title: string, content: string }[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleFileUpload = async (event: any) => {
     if (!event.target.files) return;
@@ -26,6 +28,7 @@ const Page = () => {
 
   const splitMarkdown = (markdownContent: string) => {
     // Regular expression to match headings (e.g., # Heading 1)
+    setLoading(true);
     const headingRegex = /^(#{1,6})\s(.*)/gm;
 
     // Split the content into sections based on headings
@@ -50,7 +53,10 @@ const Page = () => {
     const contentAfterLastHeading = markdownContent.substring(lastIndex);
     sectionsArray.push({ title: 'Content After Last Heading', content: contentAfterLastHeading });
 
-    setSections(sectionsArray);
+    setTimeout(() => {
+      setLoading(false);
+      setSections(sectionsArray);
+    }, 1500);
   };
 
 
@@ -59,12 +65,12 @@ const Page = () => {
       <div className='flex flex-col justify-center items-center gap-y-8'>
         <h1 className='text-center font-bold text-3xl md:text-4xl' >Split Markdown files</h1>
         <label htmlFor="fileInput" className="relative cursor-pointer bg-indigo-400 rounded-lg border border-transparent shadow-sm px-12 py-6 font-medium text-white hover:bg-indigo-500 focus:outline-none">
-          <span className='text-3xl'>Upload File</span>
+          {loading ? <Loader2 className='h-8 w-auto animate-spin' /> : <span className='text-3xl'>Upload File</span>}
           <input type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept=".md" />
         </label>
       </div>
       {
-        sections.length > 0 && (
+        sections.length > 0 && !loading && (
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className='text-center font-bold text-2xl text-slate-500 mb-4'>Split files</h2>
             <div className='grid grid-cols-1 gap-4 min-w-72'>

@@ -17,10 +17,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { DialogClose } from "@radix-ui/react-dialog";
 import { MdContentCopy } from "react-icons/md";
+import { Loader2 } from "lucide-react";
 
 const UploadPage = () => {
   const [file, setFile] = useState<any>(null);
   const [downloadUrl, setDownloadUrl] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleFileChange = (event: any) => {
     setFile(event?.target?.files[0]);
@@ -31,6 +33,8 @@ const UploadPage = () => {
       console.error('No file selected.');
       return;
     }
+
+    setLoading(true);
 
     const storageRef = ref(storage, `files/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -52,6 +56,10 @@ const UploadPage = () => {
           setDownloadUrl(shareableLink);
         });
       });
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
   }
   // console.log('file', file)
 
@@ -65,10 +73,16 @@ const UploadPage = () => {
           <span className='text-3xl'>Upload File</span>
           <input required type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(event) => handleFileChange(event)} accept=".md" />
         </label>
-        <Button  className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={handleUpload}><IoIosLink /> <span> Generate Link</span></Button>
+        <Button disabled={file === null} className='bg-gray-400 hover:bg-gray-500 text-xl font-medium flex gap-x-1 justify-center items-center  py-7 px-6' onClick={handleUpload}>
+          {loading ? <Loader2 className='h-8 w-auto animate-spin' /> :
+            <>
+              <IoIosLink /> <span> Generate Link</span>
+            </>
+          }
+        </Button>
       </div>
 
-      {downloadUrl && (
+      {downloadUrl && !loading && (
         <div>
           {/* <p>File uploaded successfully!</p>
           <p>Download Link: <Link href={downloadUrl}>{downloadUrl}</Link></p> */}

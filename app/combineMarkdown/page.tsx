@@ -26,10 +26,10 @@ const Page = () => {
       combinedContent += content + '\n---\n';
     }
 
-    setCombinedMarkdown(combinedContent);
     setTimeout(() => {
       setUploadingFiles(false);
-    }, 2000);
+      setCombinedMarkdown(combinedContent);
+    }, 1500);
   };
 
   const readFile = async (file: any): Promise<string> => {

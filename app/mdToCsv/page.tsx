@@ -1,15 +1,19 @@
 'use client'
 
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { MdOutlineFileDownload } from 'react-icons/md';
 
 const Page = () => {
   const [markdownFile, setMarkdownFile] = useState<File | null>(null);
   const [csvContent, setCsvContent] = useState<string>('');
+  const [loading, setLoading] = useState(false);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files || files.length === 0) return;
+
+    setLoading(true);
 
     const file = files[0];
     setMarkdownFile(file);
@@ -17,7 +21,10 @@ const Page = () => {
     // Read the content of the uploaded Markdown file
     const content = await readFile(file);
     const csv = convertToCsv(content);
-    setCsvContent(csv);
+    setTimeout(() => {
+      setCsvContent(csv);
+      setLoading(false);
+    }, 1500);
   };
 
   const readFile = async (file: File): Promise<string> => {
@@ -62,18 +69,24 @@ const Page = () => {
       <div className='flex flex-col justify-center items-center gap-y-8'>
         <h1 className='text-center font-bold text-3xl md:text-4xl' >Convert Markdown to CSV</h1>
         <label htmlFor="fileInput" className="relative cursor-pointer bg-indigo-400 rounded-lg border border-transparent shadow-sm px-12 py-6 font-medium text-white hover:bg-indigo-500 focus:outline-none">
-          <span className='text-3xl'>Upload File</span>
+          {
+            loading ? (
+              <Loader2 className='h-8 w-auto animate-spin' />
+            ) : (
+              <span className='text-3xl'>Upload File</span>
+            )
+          }
           <input type="file" id="fileInput" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} accept=".md" />
         </label>
       </div>
       {csvContent && (
         <a
-        href={`data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`}
-        download="converted-data.csv"
-        className="mt-4 bg-slate-400 hover:bg-slate-500 text-white py-3 px-6 rounded-lg shadow-sm text-center font-bold flex gap-x-2 items-center justify-center"
-      >
-        <span>Download CSV</span> <MdOutlineFileDownload className='h-8 w-auto' />
-      </a>
+          href={`data:text/csv;charset=utf-8,${encodeURIComponent(csvContent)}`}
+          download="converted-data.csv"
+          className="mt-4 bg-slate-400 hover:bg-slate-500 text-white py-3 px-6 rounded-lg shadow-sm text-center font-bold flex gap-x-2 items-center justify-center"
+        >
+          <span>Download CSV</span> <MdOutlineFileDownload className='h-8 w-auto' />
+        </a>
       )}
     </div>
   )
