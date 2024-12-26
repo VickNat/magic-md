@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Magic MD
+
+Magic MD is an open-source project built with Next.js that allows users to convert markdown files to various formats such as PNG, PDF, Word, and more. Additionally, it provides features to create markdown tables, generate shareable links, and merge markdown files.
+
+## Features
+
+- **Convert Markdown Files**: Transform markdown files into PNG, PDF, Word, and other formats.
+- **Create Markdown Tables**: Easily create and edit markdown tables.
+- **Generate Shareable Links**: Create links to share your markdown content with others.
+- **Merge Markdown Files**: Combine multiple markdown files into one.
 
 ## Getting Started
 
-First, run the development server:
+To get started with Magic MD, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the repository**:
+  ```bash
+  git clone https://github.com/VickNat/magic-md.git
+  ```
+2. **Navigate to the project directory**:
+  ```bash
+  cd magic-md
+  ```
+3. **Install dependencies**:
+  ```bash
+  npm install
+  ```
+4. **Run the development server**:
+  ```bash
+  npm run dev
+  ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+We welcome contributions to Magic MD! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## License
 
-## Learn More
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-To learn more about Next.js, take a look at the following resources:
+## Contact
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For any questions or inquiries, please contact us at [natanimashenafi20@gmail.com](mailto:natanimashenafi20@gmail.com).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Enjoy using Magic MD!
