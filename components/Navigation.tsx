@@ -54,8 +54,34 @@ const converters: { title: string; href: string; description: string }[] = [
 ]
 
 export function Navigation() {
+
+const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(storedTheme);
+    document.documentElement.classList.toggle('dark', storedTheme === 'dark');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+  };
+
   return (
     <NavigationMenu>
+      <NavigationMenuList>
+        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
+          <button
+            onClick={toggleTheme}
+            className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-md text-gray-800 dark:text-gray-200"
+          >
+            {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+          </button>
+      </div>
+      </NavigationMenuList>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Converters</NavigationMenuTrigger>
